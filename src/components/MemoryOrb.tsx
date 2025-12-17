@@ -18,7 +18,7 @@ export function MemoryOrb({ position, memory }: MemoryOrbProps) {
   const handleClick = () => {
     if (!clicked) {
       setClicked(true)
-      incrementMemory()
+      incrementMemory(position)
     }
   }
 
@@ -37,33 +37,31 @@ export function MemoryOrb({ position, memory }: MemoryOrbProps) {
                 scale: hovered ? 1.2 : 1,
             }}
             >
-            <sphereGeometry args={[0.4, 32, 32]} />
+            {/* Crystal shape instead of sphere */}
+            <octahedronGeometry args={[0.3, 0]} />
             <meshStandardMaterial
                 color={hovered ? "#ffc6ff" : "#e0aaff"}
                 emissive={hovered ? "#ffc6ff" : "#e0aaff"}
-                emissiveIntensity={hovered ? 3 : 1.5}
+                emissiveIntensity={hovered ? 2 : 1}
                 toneMapped={false}
                 transparent
-                opacity={0.9}
+                opacity={0.8}
             />
             </MotionMesh>
-            {/* Inner glow core */}
-            <mesh scale={0.2}>
-                <sphereGeometry args={[1, 16, 16]} />
-                <meshBasicMaterial color="white" />
-            </mesh>
+             {/* Inner light */}
+             <pointLight distance={1} intensity={1} color="#e0aaff" />
         </Float>
       ) : (
         <>
           <Flower position={[0, -0.5, 0]} />
           <group position={[0, 1, 0]}>
              <Text
-              fontSize={0.3}
+              fontSize={0.25}
               font="https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwK4vaqI.woff"
               color="#ffffff"
               anchorX="center"
               anchorY="middle"
-              outlineWidth={0.02}
+              outlineWidth={0.01}
               outlineColor="#3c096c"
             >
               {memory}
