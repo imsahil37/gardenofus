@@ -1,24 +1,45 @@
-import { MeshDistortMaterial } from '@react-three/drei'
+import { MeshDistortMaterial, MeshReflectorMaterial } from '@react-three/drei'
 
 export function Island() {
   return (
     <group>
+      {/* Main Ground */}
       <mesh position={[0, -0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <cylinderGeometry args={[12, 12, 1, 64]} />
+        <circleGeometry args={[15, 64]} />
         <meshStandardMaterial
-          color="#2d6a4f"
+          color="#1a4d2e"
           roughness={0.8}
+          metalness={0.1}
         />
       </mesh>
-      {/* Top grass layer with distortion for texture */}
-      <mesh position={[0, 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-         <circleGeometry args={[11.5, 64]} />
+
+      {/* Grassy Layer */}
+      <mesh position={[0, -0.4, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+         <circleGeometry args={[14, 64]} />
          <MeshDistortMaterial
-            color="#40916c"
-            distort={0.3}
-            speed={1.5}
-            roughness={1}
+            color="#2d6a4f"
+            distort={0.2}
+            speed={1}
+            roughness={0.8}
           />
+      </mesh>
+
+      {/* Water / Mirror Floor */}
+      <mesh position={[0, -1, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <circleGeometry args={[100, 64]} />
+        <MeshReflectorMaterial
+          blur={[300, 100]}
+          resolution={1024}
+          mixBlur={1}
+          mixStrength={40}
+          roughness={1}
+          depthScale={1.2}
+          minDepthThreshold={0.4}
+          maxDepthThreshold={1.4}
+          color="#10002b"
+          metalness={0.5}
+          mirror={0.5}
+        />
       </mesh>
     </group>
   )
