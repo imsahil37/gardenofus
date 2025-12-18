@@ -1,7 +1,12 @@
 import { useStore } from '../store'
 
 export function Overlay() {
-  const { memoryCount, totalOrbs, isComplete } = useStore()
+  const { memoryCount, totalOrbs, isComplete, hasForgiven, forgive } = useStore()
+
+  // If the user has forgiven, hide the entire overlay to allow exploration
+  if (hasForgiven) {
+    return null
+  }
 
   return (
     <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-10 flex flex-col justify-between p-4 md:p-8">
@@ -35,7 +40,7 @@ export function Overlay() {
           </p>
           <button
             className="w-full md:w-auto px-6 md:px-8 py-2 md:py-3 bg-gradient-to-r from-[#e0aaff] to-[#c77dff] hover:from-[#c77dff] hover:to-[#e0aaff] text-white font-bold rounded-full transition-all shadow-lg transform active:scale-95 md:hover:scale-105 text-sm md:text-base border border-white/20"
-            onClick={() => alert("Thank you. ❤️")}
+            onClick={forgive}
           >
             Forgive me?
           </button>

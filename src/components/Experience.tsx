@@ -11,6 +11,7 @@ import { Island } from './Island'
 import { MemoryOrb } from './MemoryOrb'
 import { TheTree } from './TheTree'
 import { Lantern } from './Lantern'
+import { Celebration } from './Celebration'
 import { useStore } from '../store'
 import { useEffect } from 'react'
 
@@ -123,6 +124,8 @@ function Scene() {
       {lanterns.map((l, i) => (
           <Lantern key={i} position={l.position} />
       ))}
+
+      <Celebration />
 
       {/* Post Processing */}
       <EffectComposer enableNormalPass={false}>

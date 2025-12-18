@@ -8,15 +8,18 @@ interface State {
   memoryCount: number
   totalOrbs: number
   isComplete: boolean
+  hasForgiven: boolean
   lanterns: LanternData[]
   incrementMemory: (position: [number, number, number]) => void
   setComplete: () => void
+  forgive: () => void
 }
 
 export const useStore = create<State>((set) => ({
   memoryCount: 0,
   totalOrbs: 5,
   isComplete: false,
+  hasForgiven: false,
   lanterns: [],
   incrementMemory: (position) =>
     set((state) => {
@@ -30,6 +33,7 @@ export const useStore = create<State>((set) => ({
       }
     }),
   setComplete: () => set({ memoryCount: 5, isComplete: true }),
+  forgive: () => set({ hasForgiven: true }),
 }))
 
 // Expose store to window for testing
