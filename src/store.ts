@@ -34,5 +34,6 @@ export const useStore = create<State>((set) => ({
 
 // Expose store to window for testing
 if (typeof window !== 'undefined') {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (window as any).useStore = useStore
 }

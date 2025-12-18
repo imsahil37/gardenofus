@@ -39,6 +39,7 @@ export function Island() {
           color="#10002b"
           metalness={0.5}
           mirror={0.5}
+          distortion={1} // Wet, organic look
         />
       </mesh>
     </group>
