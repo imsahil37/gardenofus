@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react'
+import { useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Float } from '@react-three/drei'
 import * as THREE from 'three'
@@ -7,8 +7,8 @@ export function Lantern({ position }: { position: [number, number, number] }) {
   const ref = useRef<THREE.Group>(null)
 
   // Random speed for upward movement
-  const speed = useMemo(() => 0.5 + Math.random() * 0.5, [])
-  const wobble = useMemo(() => Math.random() * Math.PI, [])
+  const [speed] = useState(() => 0.5 + Math.random() * 0.5)
+  const [wobble] = useState(() => Math.random() * Math.PI)
 
   useFrame((state, delta) => {
     if (ref.current) {

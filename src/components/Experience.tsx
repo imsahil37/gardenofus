@@ -4,12 +4,14 @@ import {
   Stars,
   Sparkles,
   Environment,
+  Cloud,
 } from '@react-three/drei'
-import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing'
+import { EffectComposer, Bloom, Vignette, TiltShift, Noise } from '@react-three/postprocessing'
 import { Island } from './Island'
 import { MemoryOrb } from './MemoryOrb'
 import { TheTree } from './TheTree'
 import { Lantern } from './Lantern'
+import { Celebration } from './Celebration'
 import { useStore } from '../store'
 import { useEffect } from 'react'
 
@@ -58,24 +60,48 @@ function Scene() {
       <ResponsiveCamera />
       <AutoRotate />
       
-      {/* Lights */}
-      <ambientLight intensity={0.2} />
+      {/* 3-Point Lighting Setup */}
+      {/* 1. Warm Key Light (Main light source, slightly orange/yellow) */}
       <spotLight
-        position={[10, 20, 10]}
+        position={[10, 15, 10]}
         angle={0.3}
-        penumbra={1}
-        intensity={2}
+        penumbra={0.5}
+        intensity={2.5}
+        color="#ffd6a5"
         castShadow
         shadow-mapSize={[2048, 2048]}
       />
-      <pointLight position={[-5, 5, -5]} color="#ff99c8" intensity={1.5} distance={20} />
-      <pointLight position={[5, 5, 5]} color="#9d4edd" intensity={1.5} distance={20} />
+
+      {/* 2. Cool Fill Light (Softens shadows, blue/purpleish) */}
+      <ambientLight intensity={0.2} color="#9d4edd" />
+      <pointLight position={[-10, 5, -10]} color="#7b2cbf" intensity={1} distance={20} />
+
+      {/* 3. Sharp Rim Light (Backlight to separate tree from background) */}
+      <spotLight
+        position={[0, 10, -15]}
+        angle={0.5}
+        penumbra={1}
+        intensity={3}
+        color="#e0aaff"
+        distance={30}
+      />
 
       {/* Environment */}
       <Environment preset="night" />
       <Stars radius={100} depth={50} count={7000} factor={4} saturation={0} fade speed={1} />
-      <Sparkles count={300} scale={20} size={3} speed={0.4} opacity={0.5} color="#fce181" />
+      <Sparkles count={500} scale={20} size={4} speed={0.4} opacity={0.5} color="#fce181" />
       <fog attach="fog" args={['#10002b', 10, 40]} />
+
+      {/* Clouds for depth */}
+      <group position={[0, 10, -20]}>
+        <Cloud
+            opacity={0.5}
+            speed={0.4}
+            bounds={[10, 2, 2]}
+            segments={20}
+            color="#e0aaff"
+        />
+      </group>
 
       {/* World */}
       <group position={[0, -0.5, 0]}>
@@ -99,9 +125,13 @@ function Scene() {
           <Lantern key={i} position={l.position} />
       ))}
 
+      <Celebration />
+
       {/* Post Processing */}
       <EffectComposer enableNormalPass={false}>
-        <Bloom luminanceThreshold={0.8} mipmapBlur intensity={1.5} radius={0.4} />
+        <Bloom luminanceThreshold={0.5} mipmapBlur intensity={1.2} radius={0.4} />
+        <TiltShift blur={0.2} />
+        <Noise opacity={0.05} />
         <Vignette eskil={false} offset={0.1} darkness={0.6} />
       </EffectComposer>
     </>
@@ -112,7 +142,8 @@ export function Experience() {
   return (
     <Canvas
       shadows
-      camera={{ position: [0, 8, 16], fov: 45 }}
+      // FOV changed to 35 for cinematic look
+      camera={{ position: [0, 8, 16], fov: 35 }}
       dpr={[1, 2]}
     >
       <color attach="background" args={['#10002b']} />

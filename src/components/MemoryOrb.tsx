@@ -22,6 +22,7 @@ export function MemoryOrb({ position, memory }: MemoryOrbProps) {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const MotionMesh = motion.mesh as any
 
   return (
